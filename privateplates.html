@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Plates - Personalized Dining</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --navy-primary: #001064;
+            --gold-accent: #A47B00;
+            --white-pure: #FFFFFF;
+            --gray-dark: #2E2E2E;
+            --gray-light: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--navy-primary);
+            background-color: var(--white-pure);
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: transparent;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background-color: var(--white-pure);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 50px;
+            position: relative;
+        }
+
+        .logo {
+            height: 200px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+            margin-top: 30px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+            align-items: center;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a {
+            color: var(--navy-primary);
+            text-decoration: none;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold-accent);
+        }
+
+        .cta-btn {
+            border: 2px solid  #A47B00;
+            color: #A47B00;
+            padding: 8px 24px;
+            
+            border-radius: 24px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cta-btn:hover {
+            background-color: rgba(164, 123, 0, 0.9);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Mobile Menu Button - Sağ tarafta olacak şekilde güncellendi */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .mobile-menu-btn span {
+            width: 30px;
+            height: 3px;
+            background-color: var(--navy-primary);
+            border-radius: 5px;
+            transition: all 0.3s linear;
+        }
+
+        /* Mobile Menu - Sağ taraftan açılacak şekilde güncellendi */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background-color: var(--navy-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            z-index: 1002; /* Z-index değerini artırdık */
+            transition: right 0.3s ease-in-out;
+            padding-top: 10px;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            text-align: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .mobile-nav-links li {
+            margin: 20px 0;
+        }
+
+        .mobile-nav-links a {
+            color: var(--white-pure);
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+            display: block;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-nav-links a:hover {
+            color: var(--gold-accent);
+        }
+
+        .close-menu {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--white-pure);
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1003; /* Kapama butonunun z-index'ini artırdık */
+        }
+
+        .mobile-header {
+            display: none;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Mobile menu açıkken body'yi kilitleme - overlay'i kaldırdık */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background-color: var(--white-pure);
+            position: relative;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 600px;
+            margin-left: 200px;
+            
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 600;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            color: var(--navy-primary);
+        }
+
+        .hero-title .accent {
+            color: var(--gold-accent);
+            font-style: italic;
+        }
+
+        .hero-text {
+            font-size: 1.125rem;
+            color: var(--navy-primary);
+            margin-bottom: 32px;
+            max-width: 500px;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn-primary {
+            background-color: var(--gold-accent);
+            color: var(--white-pure);
+            padding: 16px 32px;
+            border: none;
+            border-radius: 24px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 1.125rem;
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: #A47B00;
+            transform: scale(1.05);
+            border: 2px solid #A47B00;
+        }
+
+        .btn-secondary {
+            background: #001064;
+            border: 2px solid var(--navy-primary);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 24px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 1.125rem;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(0, 16, 100, 0.1);
+            color: #001064;
+            transform: scale(1.05);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        /* Process Section */
+        .process {
+            padding: 100px 0;
+            background-color: var(--white-pure);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 16px;
+            color: var(--navy-primary);
+        }
+
+        .section-divider {
+            width: 64px;
+            height: 2px;
+            background-color: var(--gold-accent);
+            margin: 0 auto 48px;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .process-step {
+            text-align: center;
+            padding: 32px 20px;
+            border-radius: 8px;
+            background-color: var(--white-pure);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .process-step.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .process-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gold-accent);
+            margin-bottom: 16px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: var(--navy-primary);
+            margin-bottom: 16px;
+            font-size: 1.125rem;
+            letter-spacing: 0.05em;
+        }
+
+        .step-text {
+            color: rgba(75, 85, 99, 1);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        /* Events Section */
+        .events {
+            padding: 100px 0;
+            background-color: var(--gray-light);
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .event-card {
+            position: relative;
+            aspect-ratio: 3/4;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .event-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .event-card:hover {
+            transform: scale(1.03);
+        }
+
+        .event-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .event-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.1) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .event-card:hover .event-overlay {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0.2) 100%);
+        }
+
+        .event-title {
+            color: var(--white-pure);
+            font-weight: 600;
+            font-size: 1.125rem;
+            margin-bottom: 10px;
+            letter-spacing: 0.05em;
+        }
+
+        .event-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        /* About Section */
+        .about {
+            padding: 100px 0;
+            background-color: var(--white-pure);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.7s ease;
+        }
+
+        .about.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        .about-text p {
+            color: rgba(75, 85, 99, 1);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .about-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .about-images .col-1 {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .about-images .col-2 {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding-top: 32px;
+        }
+
+        .about-img {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .about-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-img.square {
+            aspect-ratio: 1;
+        }
+
+        .about-img.rect {
+            aspect-ratio: 3/2;
+        }
+
+        .about-arrow {
+            margin-top: 16px;
+            width: 32px;
+            height: 32px;
+            background-color: var(--gold-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 100px 0;
+            background-color: var(--gray-light);
+        }
+
+        .testimonials-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .testimonial-card {
+            background-color: var(--white-pure);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .testimonial-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: var(--gray-dark);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .testimonial-text::before {
+            content: """;
+            font-size: 3rem;
+            color: var(--gold-accent);
+            position: absolute;
+            top: -15px;
+            left: -10px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+
+        .testimonial-avatar {
+            display: none; /* Avatar'ı gizle */
+        }
+
+        .author-info h4 {
+            font-weight: 600;
+            color: var(--navy-primary);
+            margin-bottom: 4px;
+        }
+
+        .author-info p {
+            font-size: 0.875rem;
+            color: rgba(75, 85, 99, 1);
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 0 0 100px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .lightbox-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0 20px;
+        }
+
+        .lightbox-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .lightbox-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* References Section */
+        .references {
+            padding: 100px 0;
+            background-color: var(--gray-light);
+            text-align: center;
+        }
+
+        .references-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .references-logos {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin: 32px 0;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .reference-logo {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .reference-logo-img {
+            height: 80px;
+            width: auto;
+            margin-bottom: 15px;
+            object-fit: contain;
+        }
+
+        .reference-icon {
+            font-size: 3rem;
+            color: var(--gold-accent);
+            margin-bottom: 8px;
+        }
+
+        .reference-text {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--navy-primary);
+        }
+
+        /* Contact Form */
+        .contact {
+            padding: 100px 0;
+            background-color: var(--navy-primary);
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .contact h2 {
+            color: var(--white-pure);
+            margin-bottom: 16px;
+        }
+
+        .contact p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 32px;
+            font-size: 1.125rem;
+        }
+
+        .form {
+            display: grid;
+            gap: 24px;
+            text-align: left;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            color: var(--white-pure);
+            font-weight: 500;
+        }
+
+        .form-input {
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white-pure);
+            font-size: 16px;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--gold-accent);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-submit {
+            background-color: var(--gold-accent);
+            color: var(--navy-primary);
+            padding: 16px 32px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 16px;
+            font-size: 1.125rem;
+        }
+
+        .form-submit:hover {
+            background-color: rgba(164, 123, 0, 0.9);
+            transform: translateY(-2px);
+        }
+
+        /* Form additions */
+        .form-checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .form-checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--white-pure);
+        }
+
+        .form-checkbox {
+            width: 16px;
+            height: 16px;
+        }
+
+        .form-options-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--white-pure);
+            color: var(--navy-primary);
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .footer-slogan {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--navy-primary);
+            margin-bottom: 20px;
+        }
+
+        .footer-logo {
+            height: 250px;
+            width: auto;
+        }
+
+        .footer-logo img {
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .footer-contact {
+            text-align: right;
+        }
+
+        .contact-info {
+            margin-bottom: 20px;
+        }
+
+        .contact-info a {
+            color: var(--navy-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .contact-info a:hover {
+            color: var(--gold-accent);
+        }
+
+        .contact-info p {
+            color: var(--navy-primary);
+            margin-bottom: 8px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--navy-primary);
+            color: var(--white-pure);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            background-color: var(--gold-accent);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            color: rgba(75, 85, 99, 1);
+        }
+
+        .copyright a {
+            color: var(--navy-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .copyright a:hover {
+            color: var(--gold-accent);
+            text-decoration: underline;
+        }
+
+        /* Animation classes */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .process-steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .events-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .nav-links {
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .cta-btn.desktop {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .mobile-header {
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-content {
+                margin-left: 0;
+                text-align: center;
+                padding: 0 20px;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .references-logos {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                text-align: center;
+            }
+
+            .footer-brand {
+                align-items: center;
+            }
+
+            .footer-contact {
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .form-checkbox-group,
+            .form-options-group {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+            }
+            
+            .references-logos {
+                flex-direction: column;
+                gap: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <img src="images/privateplates/Private_Plates-removebg-preview.png" alt="Private Plates Logo">
+            </div>
+            
+            <div class="desktop-nav">
+                <ul class="nav-links">
+                    <li><a onclick="scrollToSection('about')">ABOUT</a></li>
+                    <li><a onclick="scrollToSection('process')">PROCESS</a></li>
+                    <li><a onclick="scrollToSection('events')">EVENTS</a></li>
+                    <li><a onclick="scrollToSection('testimonials')">TESTIMONIALS</a></li>
+                    <li><a onclick="scrollToSection('contact')">CONTACT</a></li>
+                </ul>
+                <a onclick="scrollToSection('contact')" class="cta-btn desktop">Request A Quote</a>
+            </div>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="openMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+        </div>
+
+        
+    </nav>
+
+    <!-- Mobile Menu - Sağ taraftan açılacak -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-menu" onclick="closeMobileMenu()">
+            <i class="fas fa-times"></i>
+        </button>
+
+        
+        <div class="logo">
+            <img src="images/privateplates/privateolateslogowhite.png" alt="Private Plates Logo">
+        </div>
+        
+        <ul class="mobile-nav-links">
+            <li><a onclick="scrollToSection('about'); closeMobileMenu();">ABOUT</a></li>
+            <li><a onclick="scrollToSection('process'); closeMobileMenu();">PROCESS</a></li>
+            <li><a onclick="scrollToSection('events'); closeMobileMenu();">EVENTS</a></li>
+            <li><a onclick="scrollToSection('testimonials'); closeMobileMenu();">TESTIMONIALS</a></li>
+            <li><a onclick="scrollToSection('contact'); closeMobileMenu();">CONTACT</a></li>
+        </ul>
+        <a onclick="scrollToSection('contact'); closeMobileMenu();" class="cta-btn" style="margin-top: 2rem;">Request A Quote</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-bg">
+            <img src="images/privateplates/chefaj.jpg" alt="Elegant fine dining">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title font-serif">
+                    Crafted for <span class="accent">Your Life.</span>
+                </h1>
+                <p class="hero-text">
+                    Custom weekly meal prep & chef experiences — crafted for your life.
+                </p>
+                <div class="hero-cta">
+                    <a onclick="scrollToSection('contact')" class="btn-primary">Book A Call</a>
+                    <a onclick="scrollToSection('contact')" class="btn-secondary">Send Inquiry</a>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <svg width="24" height="24" fill="none" stroke="var(--navy-primary)" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="process">
+        <div class="container">
+            <h2 class="section-title font-serif">Chef AJ's Process</h2>
+            <div class="section-divider"></div>
+            <div class="process-steps">
+                <div class="process-step animate-on-scroll">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">CONSULTATION</h3>
+                    <p class="step-text">We take time to understand your unique preferences, event style, dietary needs, and culinary desires to create a truly personalized dining experience.</p>
+                </div>
+                <div class="process-step animate-on-scroll">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">MENU CREATION</h3>
+                    <p class="step-text">Each menu is bespoke and seasonally inspired, crafted with precision to match your vision and preferences perfectly.</p>
+                </div>
+                <div class="process-step animate-on-scroll">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">EXECUTION</h3>
+                    <p class="step-text">Our team arrives early, sets up kitchen professionally, and handles everything with meticulous attention to detail.</p>
+                </div>
+                <div class="process-step animate-on-scroll">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">SERVICE</h3>
+                    <p class="step-text">Each course is introduced personally by the chef, creating a memorable experience, and we leave your kitchen spotless.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events" class="events">
+        <div class="container">
+            <h2 class="section-title font-serif">EVENTS WE CATER</h2>
+            <div class="section-divider"></div>
+            <div class="events-grid">
+                <div class="event-card animate-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1573059224359-504293b0004c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb3Jwb3JhdGUlMjBidXNpbmVzcyUyMGx1bmNofGVufDF8fHx8MTc1NzE0NzM4Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" alt="Corporate Events">
+                    <div class="event-overlay">
+                        <h3 class="event-title">Corporate Events</h3>
+                        <p class="event-text">Lunches, retreats, executive dinners, and office catering for businesses of all sizes.</p>
+                    </div>
+                </div>
+
+                <div class="event-card animate-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1710587385252-73628f9faeb1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwY2VsZWJyYXRpb24lMjBkaW5uZXJ8ZW58MXx8fHwxNzU3MTQ3Mzg4fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" alt="Weddings & Celebrations">
+                    <div class="event-overlay">
+                        <h3 class="event-title">Weddings & Celebrations</h3>
+                        <p class="event-text">From intimate ceremonies to grand receptions, we create memorable dining experiences.</p>
+                    </div>
+                </div>
+
+                <div class="event-card animate-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1571397946750-99369f2a4e53?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJchaHwxfHxwcml2YXRlJTIwZGlubmVyJTIwcGFydHl8ZW58MXx8fHwxNzU7MTQ3MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" alt="Private Dinner Parties">
+                    <div class="event-overlay">
+                        <h3 class="event-title">Private Dinner Parties</h3>
+                        <p class="event-text">Host unforgettable gatherings in the comfort of your home with our in-home chef services.</p>
+                    </div>
+                </div>
+
+                <div class="event-card animate-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1606858274001-dd10efc5ce7d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxtZWFsJTIwcHJlcCUyMGhlYWx0aHklMjBmb29kfGVufDF8fHx8MTc1NzE0NzM5NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" alt="Weekly Meal Prep">
+                    <div class="event-overlay">
+                        <h3 class="event-title">Weekly Meal Prep</h3>
+                        <p class="event-text">Restaurant-quality meals tailored to your tastes, prepared fresh each week for your convenience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about animate-on-scroll">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title font-serif" style="text-align: left; margin-bottom: 24px;">ABOUT ME</h2>
+                    <p>
+                        Private Plates began in Toronto, where Chef AJ honed his craft cooking for private families, intimate dinner parties, and large celebrations. Over time, the service grew beyond one-off events into ongoing weekly meal prep for busy households — a model that proved to be both impactful and sustainable.
+                    </p>
+                    <p>
+                        After relocating to Vancouver, Private Plates expanded into the Lower Mainland, now catering to families, professionals, and corporate clients across the region. While meal prep remains our specialty, we've also brought our expertise to weddings, milestone events, and in-home chef experiences, blending global flavors with local ingredients.
+                    </p>
+                    <p>
+                        Chef AJ's background includes training in Michelin kitchens, collaborations with celebrity chefs around the world, cooking for diplomats, and competing on Top Chef Canada. Today, with Private Plates, he brings that same level of care and creativity into everyday dining — making it possible for clients to enjoy restaurant-quality meals, tailored to their tastes, delivered fresh each week.
+                    </p>
+                   
+                </div>
+                <div class="about-images">
+                    <div class="col-1">
+                        <div class="about-img square">
+                            <img src="https://images.unsplash.com/photo-1651978595438-980213ca6d3d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJchaHwxfHxwcm9mZXNzaW9uYWwlMjBraXRjaGVuJTIwY29va2luZ3xlbnwxfHx8fDE3NTcwNzYwNDJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" alt="Professional kitchen">
+                        </div>
+                        <div class="about-img rect">
+                            <img src="https://images.unsplash.com/photo-1732259495388-af40b972c311?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYXRlcmluZyUyMHNlcnZpY2UlMjBmb29kfGVufDF8fHx8MTc1NzE0NDc5M3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" alt="Catering service">
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="about-img rect">
+                            <img src="https://images.unsplash.com/photo-1703797967062-70681a18f71c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwZmluZSUyMGRpbmluZ3xlbnwxfHx8fDE3NTcxNDc0MDF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" alt="Fine dining">
+                        </div>
+                        <div class="about-img square">
+                            <img src="https://images.unsplash.com/photo-1748355734689-6fc3aa65bb75?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwZGlubmVyJTIwc2V0dXB8ZW58MXx8fHwxNzU3MTQ3NDAzfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" alt="Elegant dinner">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2 class="section-title font-serif">CLIENT TESTIMONIALS</h2>
+            <div class="section-divider"></div>
+            
+            <div class="testimonials-container">
+                <div class="testimonials-grid">
+                    <div class="testimonial-card animate-on-scroll">
+                        <p class="testimonial-text">
+                            Chef AJ transformed our anniversary dinner into an unforgettable experience. The personalized menu was exquisite, and his attention to detail was remarkable. We felt like we were at a Michelin-star restaurant right in our own home.
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <h4>Sarah Johnson</h4>
+                                <p>Private Dinner Client</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card animate-on-scroll">
+                        <p class="testimonial-text">
+                            The weekly meal prep service has been a game-changer for our busy family. Chef AJ's creative dishes are not only delicious but also healthy. It's like having a personal chef without the hassle!
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <h4>Michael Chen</h4>
+                                <p>Weekly Meal Prep Client</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card animate-on-scroll">
+                        <p class="testimonial-text">
+                            We hired Private Plates for our corporate retreat, and it was the highlight of our event. The food was exceptional, and the service was impeccable. Our team is still talking about it weeks later.
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <h4>Jennifer Lee</h4>
+                                <p>Corporate Client</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="section-title font-serif" style="font-size: 2rem; margin-bottom: 40px;">GALLERY</h3>
+                <!-- Gallery Section -->
+                <!-- Gallery Section -->
+<div class="gallery">
+    <div class="gallery-grid">
+        <div class="gallery-item" onclick="openLightbox(0)">
+            <img src="images/privateplates/private plates food 01.jpg" alt="Private Plates Food">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(1)">
+            <img src="images/privateplates/private plates food 02.jpg" alt="Private Plates Food">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(2)">
+            <img src="images/privateplates/private plates food 03.jpg" alt="Private Plates Food">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(3)">
+            <img src="images/privateplates/private plates food 04.jpg" alt="Private Plates Food">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(4)">
+            <img src="images/privateplates/private plates food 05.jpg" alt="Private Plates Food">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(5)">
+            <img src="images/privateplates/private plates food 06.jpg" alt="Private Plates Food">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(6)">
+            <img src="images/privateplates/private plates food 07.jpg" alt="Private Plates Food">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(7)">
+            <img src="images/privateplates/private plates food 08.jpg" alt="Private Plates Food">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(8)">
+            <img src="images/privateplates/private plates food 09.jpg" alt="Private Plates Food">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(9)">
+            <img src="images/privateplates/private plates food 10.jpg" alt="Private Plates Food">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(10)">
+            <img src="images/privateplates/private plates food 11.jpg" alt="Private Plates Food">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(11)">
+            <img src="images/privateplates/private plates food 12.jpg" alt="Private Plates Food">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(12)">
+            <img src="images/privateplates/private plates food 13.jpg" alt="Private Plates Food">
+        </div>
+        <div class="gallery-item" onclick="openLightbox(13)">
+            <img src="images/privateplates/private plates food 14.jpg" alt="Private Plates Food">
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="lightbox-content">
+            <img src="" alt="" id="lightbox-img">
+        </div>
+        <div class="lightbox-nav">
+            <button class="lightbox-btn" onclick="changeImage(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="lightbox-btn" onclick="changeImage(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- References Section -->
+    <section id="references" class="references">
+        <div class="references-content">
+            <h2 class="section-title font-serif">REFERENCES</h2>
+            <div class="section-divider"></div>
+            <p style="margin-bottom: 32px; color: rgba(75, 85, 99, 1);"></p>
+            <div class="references-logos">
+                <div class="reference-logo">
+                    <img src="images/privateplates/michelin .png" alt="Michelin" class="reference-logo-img">
+                    <p class="reference-text"></p>
+                </div>
+                <div class="reference-logo">
+                    <img src="images/privateplates/topofchef.png" alt="Michelin" class="reference-logo-img">
+                    <p class="reference-text"></p>
+                </div>
+            </div>
+            <p style="margin-top: 32px; max-width: 800px; margin-left: auto; margin-right: auto; color: rgba(75, 85, 99, 1);">
+                
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="contact-content">
+            <h2 class="section-title font-serif" style="color: var(--white-pure);">Contact Us</h2>
+            <p>Ready to elevate your next event? Let's create something extraordinary together.</p>
+            
+            <!-- Formspree form action ile değiştirildi -->
+            <form class="form" id="contactForm" action="https://formspree.io/f/mldwaryk" method="POST">
+                <div class="form-group">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-input" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email address" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="company" class="form-label">Company</label>
+                    <input type="text" id="company" name="company" class="form-input" placeholder="Enter your company name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventType" class="form-label">Event Type</label>
+                    <select id="eventType" name="eventType" class="form-input" required>
+                        <option value="">Select event type</option>
+                        <option value="corporate">Corporate Event</option>
+                        <option value="wedding">Wedding</option>
+                        <option value="gala">Gala Dinner</option>
+                        <option value="private">Private Dining</option>
+                        <option value="mealprep">Weekly Meal Prep</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="guests" class="form-label">Number of Guests</label>
+                    <input type="number" id="guests" name="guests" class="form-input" placeholder="Expected number of guests" min="1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="date" class="form-label">Event Date</label>
+                    <input type="date" id="date" name="date" class="form-input">
+                </div>
+                
+                <!-- Quick Selector Section -->
+                <div class="form-group">
+                    <label class="form-label">Quick Selector (for the inquiry form)</label>
+                    <p style="color: rgba(255, 255, 255, 0.7; font-size: 0.9rem; margin-bottom: 10px;">Pick your lane(s):</p>
+                    
+                    <div class="form-checkbox-group">
+                        <label class="form-checkbox-label">
+                            <input type="checkbox" name="lanes[]" value="High-Protein Wellness" class="form-checkbox">
+                            High-Protein Wellness
+                        </label>
+                        <label class="form-checkbox-label">
+                            <input type="checkbox" name="lanes[]" value="Plant-Based / Vegan" class="form-checkbox">
+                            Plant-Based / Vegan
+                        </label>
+                        <label class="form-checkbox-label">
+                            <input type="checkbox" name="lanes[]" value="Global Comforts" class="form-checkbox">
+                            Global Comforts
+                        </label>
+                        <label class="form-checkbox-label">
+                            <input type="checkbox" name="lanes[]" value="West Coast Seasonal" class="form-checkbox">
+                            West Coast Seasonal
+                        </label>
+                        <label class="form-checkbox-label">
+                            <input type="checkbox" name="lanes[]" value="Family Trays" class="form-checkbox">
+                            Family Trays
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Dietary Notes</label>
+                    <div class="form-checkbox-group">
+                        <label class="form-checkbox-label">
+                            <input type="checkbox" name="dietary[]" value="Gluten-free" class="form-checkbox">
+                            Gluten-free
+                        </label>
+                        <label class="form-checkbox-label">
+                            <input type="checkbox" name="dietary[]" value="Dairy-free" class="form-checkbox">
+                            Dairy-free
+                        </label>
+                        <label class="form-checkbox-label">
+                            <input type="checkbox" name="dietary[]" value="No beef/pork" class="form-checkbox">
+                            No beef/pork
+                        </label>
+                        <label class="form-checkbox-label">
+                            <input type="checkbox" name="dietary[]" value="Seafood OK" class="form-checkbox">
+                            Seafood OK
+                        </label>
+                        <label class="form-checkbox-label">
+                            <input type="checkbox" name="dietary[]" value="Nut-free" class="form-checkbox">
+                            Nut-free
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="spiceLevel" class="form-label">Spice Level</label>
+                    <select id="spiceLevel" name="spiceLevel" class="form-input">
+                        <option value="">Select spice level</option>
+                        <option value="Mild">Mild</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hot">Hot</option>
+                    </select>
+                </div>
+                
+                <div class="form-options-group">
+                    <div class="form-group">
+                        <label for="portioning" class="form-label">Portioning</label>
+                        <select id="portioning" name="portioning" class="form-input">
+                            <option value="">Select portioning</option>
+                            <option value="Individual meals">Individual meals</option>
+                            <option value="Family trays">Family trays</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="schedule" class="form-label">Schedule (Days/wk)</label>
+                        <select id="schedule" name="schedule" class="form-input">
+                            <option value="">Select schedule</option>
+                            <option value="3">3 days/week</option>
+                            <option value="5">5 days/week</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Meals per day</label>
+                    <div class="form-checkbox-group">
+                        <label class="form-checkbox-label">
+                            <input type="checkbox" name="meals[]" value="Breakfast" class="form-checkbox">
+                            Breakfast
+                        </label>
+                        <label class="form-checkbox-label">
+                            <input type="checkbox" name="meals[]" value="Lunch" class="form-checkbox">
+                            Lunch
+                        </label>
+                        <label class="form-checkbox-label">
+                            <input type="checkbox" name="meals[]" value="Dinner" class="form-checkbox">
+                            Dinner
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea id="message" name="message" class="form-input form-textarea" placeholder="Tell us about your vision and requirements"></textarea>
+                </div>
+                
+                <button type="submit" class="form-submit">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-slogan">
+                    "Crafted for Your Life."
+                </div>
+                <div class="footer-logo">
+                    <img src="images/privateplates/priveteplateslogoblue.png" alt="Private Plates Logo">
+                </div>
+            </div>
+            <div class="footer-contact">
+                <div class="contact-info">
+                    <a href="tel:6479074993">(647) 907-4993</a>
+                    <a href="mailto:privateplatesfood@gmail.com">privateplatesfood@gmail.com</a>
+                    <p>5311 Goring Street, Burnaby, BC</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://instagram.com" class="social-link" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 <a href="https://www.bigsparkmedia.ca" target="_blank">Big Spark Media</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu functionality
+        function openMobileMenu() {
+            document.getElementById('mobileMenu').classList.add('active');
+            document.body.classList.add('menu-open');
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileMenu').classList.remove('active');
+            document.body.classList.remove('menu-open');
+        }
+
+        // Smooth scrolling
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Animation on scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (elementPosition < screenPosition) {
+                    element.classList.add('animated');
+                }
+            });
+        }
+
+        // Initialize animations on load and scroll
+        window.addEventListener('load', animateOnScroll);
+        window.addEventListener('scroll', animateOnScroll);
+
+        // Initialize process step animations
+        window.addEventListener('load', function() {
+            const steps = document.querySelectorAll('.process-step');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            steps.forEach(step => observer.observe(step));
+        });
+
+        // Initialize event card animations
+        window.addEventListener('load', function() {
+            const cards = document.querySelectorAll('.event-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            cards.forEach(card => observer.observe(card));
+        });
+
+        // Initialize about section animation
+        window.addEventListener('load', function() {
+            const aboutSection = document.querySelector('.about');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            observer.observe(aboutSection);
+        });
+        
+        // Initialize testimonial card animations
+        window.addEventListener('load', function() {
+            const testimonials = document.querySelectorAll('.testimonial-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            testimonials.forEach(card => observer.observe(card));
+        });
+
+        // Lightbox functionality
+      // Lightbox functionality
+const galleryImages = [
+    'images/privateplates/private plates food 01.jpg',
+    'images/privateplates/private plates food 02.jpg',
+    'images/privateplates/private plates food 03.jpg',
+    'images/privateplates/private plates food 04.jpg',
+    'images/privateplates/private plates food 05.jpg',
+    'images/privateplates/private plates food 06.jpg',
+    'images/privateplates/private plates food 07.jpg',
+    'images/privateplates/private plates food 08.jpg',
+    'images/privateplates/private plates food 09.jpg',
+    'images/privateplates/private plates food 10.jpg',
+    'images/privateplates/private plates food 11.jpg',
+    'images/privateplates/private plates food 12.jpg',
+    'images/privateplates/private plates food 13.jpg',
+    'images/privateplates/private plates food 14.jpg'
+];
+
+        let currentImageIndex = 0;
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            document.getElementById('lightbox-img').src = galleryImages[currentImageIndex];
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            
+            if (currentImageIndex < 0) {
+                currentImageIndex = galleryImages.length - 1;
+            } else if (currentImageIndex >= galleryImages.length) {
+                currentImageIndex = 0;
+            }
+            
+            document.getElementById('lightbox-img').src = galleryImages[currentImageIndex];
+        }
+
+        // Close lightbox when clicking outside the image
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+
+        // Keyboard navigation for lightbox
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                } else if (e.key === 'ArrowLeft') {
+                    changeImage(-1);
+                } else if (e.key === 'ArrowRight') {
+                    changeImage(1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
